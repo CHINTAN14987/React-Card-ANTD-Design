@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { Row, Col, Card, AutoComplete } from "antd";
+import { Row, Col, Card } from "antd";
 import Data from "./Data";
 import "antd/dist/antd.css";
 import {
@@ -8,21 +8,17 @@ import {
   MailOutlined,
   PhoneOutlined,
   GlobalOutlined,
-  HeartOutlined,
   DeleteFilled,
-  HeartTwoTone,
-  HeartFilled,
 } from "@ant-design/icons";
-import { Form, Input, Checkbox } from "antd";
-import { AiOutlineHeart } from "react-icons/ai";
+import { Form, Input } from "antd";
 
 import { useState } from "react";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 
 const App = () => {
   const [ind, setInd] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [like, setLike] = useState(false);
+  const [selected, setSelected] = useState(Data);
   const [selected1, setSelected1] = useState({
     myName: "",
     email: "",
@@ -30,55 +26,28 @@ const App = () => {
     website: "",
   });
 
-  const handlesave = () => {
+  const showModal = (i) => {
+    setIsModalVisible(true);
+    setSelected1(i);
+  };
+
+  const handleOk = () => {
     setIsModalVisible(false);
     let updatedData = selected;
     updatedData.splice(ind, 1, selected1);
     console.log(updatedData, "updated");
     setSelected(updatedData);
-  };
-  // const [formValue, setFormValue] = useState({
-  //   name: "",
-  //   email: "",
-  //   phone: "",
-  //   website: "",
-  // });
-  const showModal = (i) => {
-    setIsModalVisible(true);
-    setSelected1(i);
-  };
-  const likeToggle = (id) => {
-    console.log(id);
-
-    for (const a of selected) {
-      if (a.id == id) {
-        setLike(!like);
-      }
-    }
-  };
-  const handleChange = (e) => {
-    // setFormValue({ ...formValue, [e.target.name]: e.target.value });
-    // console.log(formValue);
-  };
-  const handleOk = () => {
     setIsModalVisible(false);
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const editHandler = (item, index) => {
+    setInd(index);
+    showModal(item);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  const [selected, setSelected] = useState(Data);
-  // const handleClick = (i) => {
-  //   setLike({ oindex: i });
-  // };
 
   const handleDelete = (i) => {
     const filteredItems = selected.filter((myitems) => myitems.id !== i.id);
@@ -86,7 +55,6 @@ const App = () => {
   };
   return (
     <div>
-      {console.log(selected, "selected1")}
       <Row>
         {selected.map((item, index) => {
           const { id, myName, img, phone, email, website } = item;
@@ -113,28 +81,24 @@ const App = () => {
                   </div>
                 }
                 actions={[
-                  <div
-                    onClick={() => {
-                      likeToggle(index);
-                    }}
-                  >
-                    {like ? (
-                      <HeartFilled className="heartLike" />
-                    ) : (
-                      <AiOutlineHeart className="heart" />
-                    )}
+                  <div className="container">
+                    <input
+                      className="red-heart-checkbox"
+                      type="checkbox"
+                      id="heart"
+                    />
                   </div>,
                   <EditOutlined
                     key="edit"
                     onClick={() => {
-                      setInd(index);
-                      showModal(item);
+                      editHandler(item, index);
                     }}
                   />,
                   <DeleteFilled
                     onClick={() => {
                       handleDelete(item);
                     }}
+                    style={{ fontSize: "18px" }}
                   />,
                 ]}
               >
@@ -165,50 +129,20 @@ const App = () => {
         })}
       </Row>
       <>
-        {isModalVisible && (
-          <div>
-            <input
-              type="text"
-              value={selected1?.myName}
-              onChange={(e) => {
-                setSelected1({
-                  ...selected1,
-                  myName: e.target.value,
-                });
-              }}
-            ></input>
-
-            <input
-              type="text"
-              value={selected1?.email}
-              onChange={(e) => {
-                setSelected1({
-                  ...selected1,
-                  email: e.target.value,
-                });
-              }}
-            ></input>
-            <button onClick={() => setIsModalVisible(false)}>Close</button>
-            <button onClick={handlesave}>save</button>
-            {console.log("hello")}
-          </div>
-        )}
-        {/* <Modal
+        <Modal
           title="Basic Modal"
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            // autoComplete="off"
-          >
-            <Form.Item label="Name" rules={[{ required: true }]}>
+          {console.log(selected1)}
+          <Form name="basic" wrapperCol={{ span: 16 }}>
+            <Form.Item
+              label="Name"
+              rules={[{ required: true }]}
+              className="mylabel"
+              style={{ justifyContent: "end" }}
+            >
               <Input
                 type="text"
                 value={selected1?.myName}
@@ -221,7 +155,13 @@ const App = () => {
               />
             </Form.Item>
 
-            <Form.Item label="Email" rules={[{ required: true }]}>
+            <Form.Item
+              className="mylabel"
+              label="Email"
+              rules={[{ required: true }]}
+              style={{ justifyContent: "end" }}
+              type="email"
+            >
               <Input
                 type="text"
                 value={selected1?.email}
@@ -235,7 +175,9 @@ const App = () => {
             </Form.Item>
             <Form.Item
               label="Phone"
+              className="mylabel"
               rules={[{ required: true, message: "Phone" }]}
+              style={{ justifyContent: "end" }}
             >
               <Input
                 type="text"
@@ -250,7 +192,9 @@ const App = () => {
             </Form.Item>
             <Form.Item
               label="Website"
+              className="mylabel"
               rules={[{ required: true, message: "Website" }]}
+              style={{ justifyContent: "end" }}
             >
               <Input
                 type="text"
@@ -264,7 +208,7 @@ const App = () => {
               />
             </Form.Item>
           </Form>
-        </Modal> */}
+        </Modal>
       </>
     </div>
   );

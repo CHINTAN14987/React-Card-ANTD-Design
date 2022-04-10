@@ -12,3 +12,66 @@
   fill: red;
   font-size: 30px;
 }
+.mylabel::before {
+  content: "*";
+  align-items: center;
+  color: red;
+}
+
+.container {
+  height: 10px;
+  width: 10px;
+  display: flex;
+  margin-left: 50px;
+  margin-top: 7px;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="checkbox"] {
+  height: 100%;
+  width: 100%;
+  background-color: grey;
+  /* border-right: 1px solid black; */
+  /* border-bottom: 1px solid black; */
+
+  position: relative;
+  outline: none;
+  transform: rotate(45deg);
+  -webkit-appearance: none;
+}
+input[type="checkbox"]:before {
+  position: absolute;
+  content: "";
+  background-color: grey;
+  /* border-right: 2px solid black; */
+  /* border-left: 2px solid black; */
+  height: 60%;
+  width: 100%;
+  top: -57%;
+  border-radius: 50px 50px 0px 0px;
+}
+input[type="checkbox"]:after {
+  /* border-right: 2px solid black;
+  border-left: 2px solid black; */
+  position: absolute;
+  content: "";
+  background-color: grey;
+  height: 60%;
+  width: 100%;
+  transform: rotate(-90deg);
+  border-radius: 50px 50px 0px 0px;
+  top: 20%;
+  right: 77%;
+}
+input[type="checkbox"]:checked,
+input:checked[type="checkbox"]:after,
+input:checked[type="checkbox"]:before {
+  background-color: red;
+}
+
+@media screen and (max-width: 575px) {
+  .mylabel::before {
+    content: "";
+  }
+}
