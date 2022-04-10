@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Row, Col, Card } from "antd";
 import Data from "./Data";
