@@ -48,7 +48,7 @@ input[type="checkbox"]:before {
   /* border-left: 2px solid black; */
   height: 60%;
   width: 100%;
-  top: -57%;
+  top: -56%;
   border-radius: 50px 50px 0px 0px;
 }
 input[type="checkbox"]:after {
@@ -62,7 +62,7 @@ input[type="checkbox"]:after {
   transform: rotate(-90deg);
   border-radius: 50px 50px 0px 0px;
   top: 20%;
-  right: 77%;
+  right: 76%;
 }
 input[type="checkbox"]:checked,
 input:checked[type="checkbox"]:after,
